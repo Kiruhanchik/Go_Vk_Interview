@@ -1,54 +1,56 @@
 package main
 
 import (
-	"example/services"
 	"example/structures"
 	"fmt"
 	"log"
 )
 
 func main() {
-	Queue := structures.NotificationQueue{Notifications: []structures.Notification{}}
+	Queue := &structures.NotificationQueue{}
 
 	Notification := structures.Notification{
-		Text: "Hi",
+		Text: "First",
 		Time: "12:30",
 	}
 
 	Notification2 := structures.Notification{
-		Text: "Goodbye",
-		Time: "12:34",
+		Text: "Second",
+		Time: "12:33",
 	}
 
 	Notification3 := structures.Notification{
-		Text: "Ok",
-		Time: "13:00",
+		Text: "Third",
+		Time: "12:36",
 	}
 
-	services.AddNotification(Notification, &Queue)
+	Queue.AddNotification(Notification)
 
-	services.AddNotification(Notification2, &Queue)
+	Queue.AddNotification(Notification2)
 
-	services.AddNotification(Notification3, &Queue)
+	Queue.AddNotification(Notification3)
 
-	fmt.Println(Queue.Notifications)
-
-	Notification, err := services.GetRandomNotification(&Queue)
+	n, err := Queue.RandomNotification()
 
 	if err != nil {
 		log.Fatal(err)
-	} else {
-		fmt.Println(Notification)
 	}
 
-	FirstNotification, err := services.PopNotification(&Queue)
+	fmt.Println("Random: ", *n)
+
+	n, err = Queue.PopNotification()
 
 	if err != nil {
 		log.Fatal(err)
-	} else {
-		fmt.Println(FirstNotification)
 	}
 
-	fmt.Println(Queue.Notifications)
+	fmt.Println("First notification: ", *n)
+
+	current := Queue.Head
+
+	for current != nil {
+		fmt.Println(current.Notification)
+		current = current.Next
+	}
 
 }

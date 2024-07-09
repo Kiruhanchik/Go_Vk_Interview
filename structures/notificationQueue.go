@@ -1,5 +1,11 @@
 package structures
 
 type NotificationQueue struct {
-	Notifications []Notification
+	Head *Node
+	Tail *Node
+}
+
+type Node struct {
+	Notification Notification
+	Next         *Node
 }
